@@ -29,7 +29,7 @@ const App = () => {
     if (width) {
       vis = new Graph(canvasRef.current, {
         width: width,
-        nodes: nodes.slice(0, 1),
+        nodes: nodes,
         height: 500,
         appHeight: appHeight,
       });
