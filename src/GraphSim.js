@@ -15,6 +15,7 @@ class Graph {
       .on("contextmenu", this.handleRightClick);
     console.log(props.width, props.height);
     console.log(this.props.nodes);
+    console.log(this.props.links)
   }
 
   handleMouseDown = (e) => {
@@ -97,16 +98,37 @@ class Graph {
 
   drawNode = (d) => {
     this.context.moveTo(d.x, d.y);
-    this.context.arc(d.x, d.y, 4, 0, 2 * Math.PI);
+    this.context.arc(d.x, d.y, this.props.nodeSize=4, 0, 2 * Math.PI);
   };
 
   updateData = () => {
     const forceNode = d3.forceManyBody().strength(() => {
       return -15 * Math.max(1, this.nodeSize / 5);
     });
+    const forceLink = d3
+      .forceLink(this.props.links)
+      .strength((d) => {
+        return 1;
+      })
+      .distance(this.props.linkDistance=30)
     this.simulation = d3
       .forceSimulation(this.props.nodes)
-      .force("x", d3.forceX(this.props.width / 2))
+      .force(
+        "x",
+        d3
+          .forceX()
+          .x((d) => {
+            if (d.hasLink) {
+              return this.props.width / 4;
+            } else {
+              return (this.props.width * 3) / 4;
+            }
+          })
+          .strength(() => {
+            return .1
+          })
+      )
+      .force("links", forceLink)
       .force("y", d3.forceY(this.props.height / 2))
       .force("collide", d3.forceCollide((this.props.collideForce = 15)))
       .on("tick", this.ticked);
