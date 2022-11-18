@@ -1,0 +1,31 @@
+
+.app-container {
+  max-width: 1200px;
+  margin: auto;
+}
+
+.app-header {
+  display: flex;
+  padding: 1rem 0 1rem 0;
+}
+
+.app-title {
+  margin-right: auto;
+  font-size: 24px;
+}
+
+.app-nav-bar {
+  font-family: Arial, Helvetica, sans-serif;
+  display: flex;
+  margin-left: auto;
+  gap: 4rem;
+}
+
+.app-nav-bar > div {
+  align-self: flex-end; /* center */
+}
+
+canvas {
+  position: absolute;
+  left: 100;
+}
