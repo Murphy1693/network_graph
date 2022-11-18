@@ -9,9 +9,11 @@ const App = () => {
   const canvasRef = useRef(null);
   const [width, setWidth] = useState(0);
   const [nodes, setNodes] = useState([]);
+  const [appHeight, setAppHeight] = useState(0);
 
   useEffect(() => {
     console.log(container.current.getBoundingClientRect());
+    setAppHeight(container.current.getBoundingClientRect().bottom);
     setWidth(container.current.getBoundingClientRect().width);
     d3.json("./data/full_nodes.json").then((data) => {
       console.log(data);
@@ -27,8 +29,9 @@ const App = () => {
     if (width) {
       vis = new Graph(canvasRef.current, {
         width: width,
-        nodes: nodes,
+        nodes: nodes.slice(0, 1),
         height: 500,
+        appHeight: appHeight,
       });
     }
   };

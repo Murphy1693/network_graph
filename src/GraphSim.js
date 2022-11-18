@@ -5,9 +5,14 @@ class Graph {
     this.context = container.getContext("2d");
     this.props = props;
     this.updateData();
+    d3.select(container).on("mousedown", this.handleMouseDown);
     console.log(props.width, props.height);
     console.log(this.props.nodes);
   }
+
+  handleMouseDown = (e) => {
+    console.log(e.x, e.y - this.props.appHeight);
+  };
 
   ticked = () => {
     console.log("hi");
