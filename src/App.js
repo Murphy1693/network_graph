@@ -42,10 +42,10 @@ const App = () => {
       if (active === node.id) {
         setActive(null);
       } else {
-        setActive(node.id)
+        setActive(node.id);
       }
     }
-  }
+  };
 
   let initVis = () => {
     if (width) {
@@ -65,7 +65,6 @@ const App = () => {
   return (
     <div>
       <div ref={container} className="app-container">
-        {active}
         <div className="app-header">
           <div className="app-title">Network Graph</div>
           <div className="app-nav-bar">
@@ -76,6 +75,7 @@ const App = () => {
         </div>
       </div>
       <canvas ref={canvasRef} height="600" width={width}></canvas>
+      <div style={{ position: "fixed", bottom: 0 }}>{active}</div>
     </div>
   );
 };
