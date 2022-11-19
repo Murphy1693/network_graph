@@ -15,14 +15,13 @@ class Graph {
       .on("contextmenu", this.handleRightClick);
     console.log(props.width, props.height);
     console.log(this.props.nodes);
-    console.log(this.props.links)
+    console.log(this.props.links);
   }
 
   handleMouseDown = (e) => {
-    // console.log(e.x, e.y - this.props.appHeight);
     this.mousedown = true;
     e.subject = this.simulation.find(
-      e.pageX,
+      e.pageX - 20,
       e.pageY - this.props.appHeight,
       this.nodeSize * 1.5
     );
@@ -37,9 +36,8 @@ class Graph {
 
   handleMouseMove = (e) => {
     if (this.mousedown) {
-      this.cursor_x = e.pageX;
+      this.cursor_x = e.pageX - 20;
       this.cursor_y = e.pageY - this.props.appHeight;
-      // console.log(this.cursor_x, this.cursor_y);
     } else {
       this.cursor_x = null;
       this.cursor_y = null;
@@ -63,7 +61,7 @@ class Graph {
   handleRightClick = (e) => {
     e.preventDefault();
     let selectedNode = this.simulation.find(
-      e.pageX,
+      e.pageX - 20,
       e.pageY - this.props.appHeight,
       this.nodeSize * 1.5
     );
@@ -98,7 +96,7 @@ class Graph {
 
   drawNode = (d) => {
     this.context.moveTo(d.x, d.y);
-    this.context.arc(d.x, d.y, this.props.nodeSize=4, 0, 2 * Math.PI);
+    this.context.arc(d.x, d.y, (this.props.nodeSize = 4), 0, 2 * Math.PI);
   };
 
   updateData = () => {
@@ -110,7 +108,7 @@ class Graph {
       .strength((d) => {
         return 1;
       })
-      .distance(this.props.linkDistance=30)
+      .distance((this.props.linkDistance = 30));
     this.simulation = d3
       .forceSimulation(this.props.nodes)
       .force(
@@ -125,7 +123,7 @@ class Graph {
             }
           })
           .strength(() => {
-            return .1
+            return 0.1;
           })
       )
       .force("links", forceLink)
