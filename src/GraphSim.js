@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import {lineX1, lineX2, lineY1, lineY2} from "../graphFunctions.js"
+import { lineX1, lineX2, lineY1, lineY2 } from "../graphFunctions.js";
 
 class Graph {
   constructor(container, props) {
@@ -47,18 +47,24 @@ class Graph {
   };
 
   handleClick = (e) => {
-    let x = setInterval(() => {
-      this.simulation.alphaTarget(0.05).restart();
-      if (this.mousedown) {
-        if (this.cursor_x !== null && this.cursor_y !== null) {
-          e.subject.fx = this.cursor_x;
-          e.subject.fy = this.cursor_y;
-        }
+    if (e.button === 0) {
+      if (e.ctrlKey) {
+        this.props.handleNodeClick(e.subject, e);
       } else {
-        clearInterval(x);
+        let x = setInterval(() => {
+          console.log("mouse is down");
+          this.simulation.alphaTarget(0.05).restart();
+          if (this.mousedown) {
+            if (this.cursor_x !== null && this.cursor_y !== null) {
+              e.subject.fx = this.cursor_x;
+              e.subject.fy = this.cursor_y;
+            }
+          } else {
+            clearInterval(x);
+          }
+        }, 10);
       }
-    }, 10);
-    this.props.handleNodeClick(e.subject, e)
+    }
   };
 
   handleRightClick = (e) => {
@@ -87,9 +93,11 @@ class Graph {
     this.context.clearRect(0, 0, this.props.width, this.props.height);
     this.context.save();
     this.props.links.forEach((link) => {
-      this.drawArrow(link)
-    })
-    this.props.nodes?.forEach((node) => {
+      this.drawArrow(link);
+    });
+    this.context.restore();
+    this.context.save();
+    this.props.nodes.forEach((node) => {
       this.context.beginPath();
       this.drawNode(node);
       this.context.fillStyle = this.props.active === node.id ? "red" : "black";
@@ -106,7 +114,6 @@ class Graph {
   };
 
   drawArrow = (link) => {
-
     let endX = lineX2(link, this.nodeSize, this.arrowFill);
     let startX = lineX1(link, this.nodeSize, this.arrowFill);
     let endY = lineY2(link, this.nodeSize, this.arrowFill);
@@ -119,7 +126,7 @@ class Graph {
     this.context.beginPath();
     this.context.moveTo(Math.floor(endX), Math.floor(endY));
     this.context.lineTo(Math.floor(startX), Math.floor(startY));
-    this.context.strokeStyle = 'black';
+    this.context.strokeStyle = "black";
     this.context.globalAlpha = 1;
     this.context.lineWidth = 1;
     this.context.stroke();
@@ -147,41 +154,46 @@ class Graph {
     // this.context.strokeStyle = color;
     this.context.lineWidth = this.arrowFill;
     this.context.stroke();
-    this.context.fillStyle = 'black';
+    this.context.fillStyle = "black";
     this.context.fill();
     this.context.restore();
-}
+  };
 
   updateData = () => {
-    const forceNode = d3.forceManyBody().strength(() => {
-      return -15 * Math.max(1, this.nodeSize / 5);
-    });
+    const forceNode = d3
+      .forceManyBody()
+      .strength(() => {
+        return -15 * Math.max(1, this.nodeSize / 5);
+      })
+      .theta(0.99);
+
+    const forceX = d3
+      .forceX()
+      .x((d) => {
+        if (d.hasLink) {
+          return this.props.width / 4;
+        } else {
+          return (this.props.width * 3) / 4;
+        }
+      })
+      .strength(0.05);
+    const forceY = d3.forceY(this.props.height / 2).strength(0.05);
+    const forceCollide = d3.forceCollide((this.props.collideForce = 15));
+
     const forceLink = d3
       .forceLink(this.props.links)
       .strength((d) => {
         return 1;
       })
-      .distance((this.props.linkDistance = 20));
+      .distance((this.props.linkDistance = 30));
+
     this.simulation = d3
       .forceSimulation(this.props.nodes)
-      .force(
-        "x",
-        d3
-          .forceX()
-          .x((d) => {
-            if (d.hasLink) {
-              return this.props.width / 4;
-            } else {
-              return (this.props.width * 3) / 4;
-            }
-          })
-          .strength(() => {
-            return 0.1;
-          })
-      )
-      .force("links", forceLink)
-      .force("y", d3.forceY(this.props.height / 2))
-      .force("collide", d3.forceCollide((this.props.collideForce = 15)))
+      .force("collide", forceCollide)
+      .force("x", forceX)
+      .force("link", forceLink)
+      .force("charge", forceNode)
+      .force("y", forceY)
       .on("tick", this.ticked);
     this.props.simulationRef.current = this.simulation;
   };
