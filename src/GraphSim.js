@@ -1,4 +1,5 @@
 import * as d3 from "d3";
+import {lineX1, lineX2, lineY1, lineY2} from "../graphFunctions.js"
 
 class Graph {
   constructor(container, props) {
@@ -7,6 +8,7 @@ class Graph {
     this.mousedown = false;
     this.nodeSize = 5;
     this.simulation = null;
+    this.arrowFill = 4;
     this.updateData();
     d3.select(container)
       .on("mousedown", this.handleMouseDown)
@@ -83,6 +85,9 @@ class Graph {
   ticked = () => {
     this.context.clearRect(0, 0, this.props.width, this.props.height);
     this.context.save();
+    this.props.links.forEach((link) => {
+      this.drawArrow(link)
+    })
     this.props.nodes?.forEach((node) => {
       this.context.beginPath();
       this.drawNode(node);
@@ -99,6 +104,53 @@ class Graph {
     this.context.arc(d.x, d.y, (this.props.nodeSize = 4), 0, 2 * Math.PI);
   };
 
+  drawArrow = (link) => {
+
+    let endX = lineX2(link, this.nodeSize, this.arrowFill);
+    let startX = lineX1(link, this.nodeSize, this.arrowFill);
+    let endY = lineY2(link, this.nodeSize, this.arrowFill);
+    let startY = lineY1(link, this.nodeSize, this.arrowFill);
+    this.context.save();
+    const headlen = 2;
+    const angle = Math.atan2(endY - startY, endX - startX);
+
+    // starting path of the arrow from the start square to the end square and drawing the stroke
+    this.context.beginPath();
+    this.context.moveTo(Math.floor(endX), Math.floor(endY));
+    this.context.lineTo(Math.floor(startX), Math.floor(startY));
+    this.context.strokeStyle = 'black';
+    this.context.globalAlpha = 1;
+    this.context.lineWidth = 1;
+    this.context.stroke();
+
+    //starting a new path from the head of the arrow to one of the sides of the point
+    const arrowLen1 = headlen * Math.cos(angle - Math.PI / 7);
+    const arrowLen2 = headlen * Math.sin(angle - Math.PI / 7);
+
+    this.context.beginPath();
+    this.context.moveTo(endX, endY);
+    this.context.lineTo(endX - arrowLen1, endY - arrowLen2);
+
+    // path from the side point of the arrow, to the other side point
+    this.context.lineTo(
+      endX - headlen * Math.cos(angle + Math.PI / 7),
+      endY - headlen * Math.sin(angle + Math.PI / 7)
+    );
+
+    // // path from the side point back to the tip of the arrow, and then again to the opposite side point
+    this.context.globalAlpha = 1;
+    this.context.lineTo(endX, endY);
+    this.context.lineTo(endX - arrowLen1, endY - arrowLen2);
+
+    // draws the paths created above
+    // this.context.strokeStyle = color;
+    this.context.lineWidth = this.arrowFill;
+    this.context.stroke();
+    this.context.fillStyle = 'black';
+    this.context.fill();
+    this.context.restore();
+}
+
   updateData = () => {
     const forceNode = d3.forceManyBody().strength(() => {
       return -15 * Math.max(1, this.nodeSize / 5);
@@ -108,7 +160,7 @@ class Graph {
       .strength((d) => {
         return 1;
       })
-      .distance((this.props.linkDistance = 30));
+      .distance((this.props.linkDistance = 20));
     this.simulation = d3
       .forceSimulation(this.props.nodes)
       .force(
