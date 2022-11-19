@@ -9,27 +9,12 @@ let graphData = new GraphData();
 const App = () => {
   const container = useRef(null);
   const canvasRef = useRef(null);
+  const simulationRef = useRef(null);
   const [width, setWidth] = useState(0);
   const [nodes, setNodes] = useState([]);
   const [appHeight, setAppHeight] = useState(0);
   const [links, setLinks] = useState([]);
-
-  // useEffect(() => {
-  //   console.log(container.current.getBoundingClientRect());
-  //   setAppHeight(container.current.getBoundingClientRect().bottom);
-  //   setWidth(container.current.getBoundingClientRect().width);
-  //   d3.json("./data/full_nodes.json").then((data) => {
-  //     console.log(data);
-  //     setNodes(data.nodes);
-  //     data.network.forEach((link) => {
-  //       for (let i = 0; i < nodes.length; i++) {
-  //         if (link.to === nodes[i].id) {
-
-  //         }
-  //       }
-  //     })
-  //   });
-  // }, []);
+  const [active, setActive] = useState(null);
 
   useEffect(() => {
     setAppHeight(container.current.getBoundingClientRect().bottom);
@@ -41,28 +26,6 @@ const App = () => {
       data.network.forEach((link) => {
         graphData.addLink(link.from, link.to);
       });
-      // setLinks(
-      //   data.network.map((ele) => {
-      //     for (let i = 0; i < data.nodes.length; i++) {
-      //       if (data.nodes[i].id === ele.to) {
-      //         ele.target = data.nodes[i];
-      //         data.nodes[i].hasLink = true;
-      //         if (ele.source) {
-      //           break;
-      //         }
-      //       } else if (data.nodes[i].id === ele.from) {
-      //         ele.source = data.nodes[i];
-      //         data.nodes[i].hasLink = true;
-      //         if (ele.target) {
-      //           break;
-      //         }
-      //       }
-      //     }
-      //     return ele;
-      //   })
-      // );
-      //   console.log(data);
-      //   setNodes(data.nodes);
       setNodes(Object.values(graphData._nodes));
       setLinks(graphData._links);
     });
@@ -71,7 +34,18 @@ const App = () => {
 
   useEffect(() => {
     initVis();
-  }, [width, nodes]);
+  }, [width, nodes, active]);
+
+  let handleNodeClick = (node, e) => {
+    simulationRef.current.stop();
+    if (e.ctrlKey) {
+      if (active === node.id) {
+        setActive(null);
+      } else {
+        setActive(node.id)
+      }
+    }
+  }
 
   let initVis = () => {
     if (width) {
@@ -81,6 +55,9 @@ const App = () => {
         height: 600,
         appHeight: appHeight,
         links: [...links],
+        active: active,
+        handleNodeClick: handleNodeClick,
+        simulationRef: simulationRef,
       });
     }
   };
@@ -88,6 +65,7 @@ const App = () => {
   return (
     <div>
       <div ref={container} className="app-container">
+        {active}
         <div className="app-header">
           <div className="app-title">Network Graph</div>
           <div className="app-nav-bar">

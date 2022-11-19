@@ -58,6 +58,7 @@ class Graph {
         clearInterval(x);
       }
     }, 10);
+    this.props.handleNodeClick(e.subject, e)
   };
 
   handleRightClick = (e) => {
@@ -91,7 +92,7 @@ class Graph {
     this.props.nodes?.forEach((node) => {
       this.context.beginPath();
       this.drawNode(node);
-      this.context.fillStyle = "black";
+      this.context.fillStyle = this.props.active === node.id ? "red" : "black";
       this.context.strokeStyle = "red";
       this.context.strokeWidth = 1;
       this.context.fill();
@@ -182,6 +183,7 @@ class Graph {
       .force("y", d3.forceY(this.props.height / 2))
       .force("collide", d3.forceCollide((this.props.collideForce = 15)))
       .on("tick", this.ticked);
+    this.props.simulationRef.current = this.simulation;
   };
 }
 
