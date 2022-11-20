@@ -15,6 +15,7 @@ class Graph {
       .on("mousemove", this.handleMouseMove)
       .on("mouseup", this.handleMouseUp)
       .on("contextmenu", this.handleRightClick);
+    console.log(this.props.nodes)
   }
 
   handleMouseDown = (e) => {
@@ -45,7 +46,7 @@ class Graph {
 
   handleClick = (e) => {
     if (e.button === 0) {
-      if (e.ctrlKey || e.shiftKey) {
+      if (e.altKey || e.shiftKey) {
         this.props.handleNodeClick(e.subject, e);
       } else {
         let x = setInterval(() => {

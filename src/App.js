@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Graph from "./GraphSim.js";
-import GraphData from "../graphData.js";
+import GraphData, {compareNodes} from "../graphData.js";
 import * as d3 from "d3";
 
 let vis;
@@ -35,7 +35,7 @@ const App = () => {
   }, []);
 
   const handleNodeClick = (node, e) => {
-    if (e.ctrlKey) {
+    if (e.altKey) {
       handleActive(node.id);
     } else if (e.shiftKey) {
       handleSelected(node.id);
@@ -88,6 +88,7 @@ const App = () => {
   };
 
   useEffect(() => {
+    console.log(compareNodes(null, selectedNodes, graphData))
     initVis();
   }, [width, nodes, active, selectedNodes]);
 
