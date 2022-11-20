@@ -1,3 +1,5 @@
+import { useCallback } from "react";
+
 export default class GraphData {
   constructor() {
     this._nodes = {};
@@ -26,4 +28,47 @@ export default class GraphData {
   };
 }
 
-export const compareNodes
+export const paginateArray = function (arr, pageSize=20) {
+  let newArr = [];
+  let prev = 0;
+  for (let i = pageSize; i <= arr.length; i += pageSize) {
+    newArr.push(arr.slice(prev, i));
+    prev = i;
+  }
+  if (arr[prev - 1] !== arr[arr.length - 1]) {
+    console.log("triggered");
+    console.log(arr[prev - 1], arr[arr.length - 1]);
+    newArr.push(arr.slice(prev, arr.length));
+  }
+  return newArr;
+};
+
+const zip = function(arr1, arr2, callback) {
+  for (let i = 0; i < Math.min(arr1.length, arr2.length); i++) {
+    callback(arr1[i], arr2[i])
+  }
+}
+
+export const compareNodes = (activeNode, selectedNodes=[], graphData) => {
+  let primaryNode = {...activeNode};
+  if (activeNode && !selectedNodes.length) {
+    primaryNode.display_observed_genotype = [];
+    primaryNode.observed_genotype.forEach((alleleObject) => {
+      primaryNode.display_observed_genotype.push(alleleObject.genotype)
+    })
+    primaryNode.display_observed_genotype = paginateArray(primaryNode.display_observed_genotype)
+    return {primary: primaryNode, secondary: null}
+  } else if (!activeNode && selectedNodes.length) {
+    let secondaries = selectedNodes.map((id) => {
+      let node = graphData._nodes[id];
+      node.display_observed_genotype = [];
+      node.observed_genotype.forEach((alleleObject) => {
+        let newAlleles = alleleObject.genotype.replaceAll('1', '2')
+        node.display_observed_genotype.push(newAlleles);
+      })
+      node.display_observed_genotype = paginateArray(node.display_observed_genotype)
+      return node;
+    })
+    return {primary: null, secondary: secondaries}
+  }
+}
