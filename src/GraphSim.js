@@ -15,9 +15,6 @@ class Graph {
       .on("mousemove", this.handleMouseMove)
       .on("mouseup", this.handleMouseUp)
       .on("contextmenu", this.handleRightClick);
-    console.log(props.width, props.height);
-    console.log(this.props.nodes);
-    console.log(this.props.links);
   }
 
   handleMouseDown = (e) => {
@@ -48,7 +45,7 @@ class Graph {
 
   handleClick = (e) => {
     if (e.button === 0) {
-      if (e.ctrlKey) {
+      if (e.ctrlKey || e.shiftKey) {
         this.props.handleNodeClick(e.subject, e);
       } else {
         let x = setInterval(() => {
@@ -84,6 +81,7 @@ class Graph {
       //     link.target.fy = null;
       //   }
       // });
+      this.simulation.alphaTarget(0.05).restart();
       selectedNode.fx = null;
       selectedNode.fy = null;
     }
@@ -100,9 +98,14 @@ class Graph {
     this.props.nodes.forEach((node) => {
       this.context.beginPath();
       this.drawNode(node);
-      this.context.fillStyle = this.props.active === node.id ? "red" : "black";
-      this.context.strokeStyle = "red";
-      this.context.strokeWidth = 1;
+      this.context.fillStyle =
+        this.props.active === node.id
+          ? "red"
+          : this.props.selectedNodes.includes(node.id)
+          ? this.props.colors[this.props.selectedNodes.indexOf(node.id)]
+          : this.props.nodeColor || "black";
+      // this.context.strokeStyle = "red";
+      // this.context.strokeWidth = 1;
       this.context.fill();
     });
     this.context.restore();

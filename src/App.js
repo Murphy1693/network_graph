@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import Graph from "./GraphSim.js";
-import GraphData from "../GraphData.js";
+import GraphData from "../graphData.js";
 import * as d3 from "d3";
 
 let vis;
 let graphData = new GraphData();
+const colors = ["blue", "green", "purple", "orange"];
 
 const App = () => {
   const container = useRef(null);
@@ -15,6 +16,7 @@ const App = () => {
   const [appHeight, setAppHeight] = useState(0);
   const [links, setLinks] = useState([]);
   const [active, setActive] = useState(null);
+  const [selectedNodes, setSelectedNodes] = useState([]);
 
   useEffect(() => {
     setAppHeight(container.current.getBoundingClientRect().bottom);
@@ -32,19 +34,40 @@ const App = () => {
     window.graphData = graphData;
   }, []);
 
-  useEffect(() => {
-    initVis();
-  }, [width, nodes, active]);
-
-  let handleNodeClick = (node, e) => {
-    simulationRef.current.stop();
+  const handleNodeClick = (node, e) => {
     if (e.ctrlKey) {
-      if (active === node.id) {
-        setActive(null);
-      } else {
-        setActive(node.id);
-      }
+      handleActive(node.id);
+    } else if (e.shiftKey) {
+      handleSelected(node.id);
     }
+  };
+
+  const handleActive = (id) => {
+    if (active === id) {
+      setActive(null);
+      return;
+    }
+    let copySelectedNodes = selectedNodes.slice();
+    if (copySelectedNodes.includes(id)) {
+      copySelectedNodes.splice(copySelectedNodes.indexOf(id), 1);
+    }
+    simulationRef.current.stop();
+    setActive(id);
+    setSelectedNodes(copySelectedNodes);
+  };
+
+  const handleSelected = (id) => {
+    if (id === active) {
+      return;
+    }
+    let copySelectedNodes = selectedNodes.slice();
+    if (copySelectedNodes.includes(id)) {
+      copySelectedNodes.splice(copySelectedNodes.indexOf(id), 1);
+    } else {
+      copySelectedNodes.push(id);
+    }
+    simulationRef.current.stop();
+    setSelectedNodes(copySelectedNodes);
   };
 
   let initVis = () => {
@@ -56,11 +79,17 @@ const App = () => {
         appHeight: appHeight,
         links: [...links],
         active: active,
+        selectedNodes: selectedNodes,
         handleNodeClick: handleNodeClick,
         simulationRef: simulationRef,
+        colors: colors,
       });
     }
   };
+
+  useEffect(() => {
+    initVis();
+  }, [width, nodes, active, selectedNodes]);
 
   return (
     <div>
@@ -75,7 +104,9 @@ const App = () => {
         </div>
       </div>
       <canvas ref={canvasRef} height="600" width={width}></canvas>
-      <div style={{ position: "fixed", bottom: 0 }}>{active}</div>
+      <div style={{ position: "fixed", bottom: 0 }}>
+        {JSON.stringify(selectedNodes)}
+      </div>
     </div>
   );
 };
