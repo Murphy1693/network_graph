@@ -25,3 +25,5 @@ export default class GraphData {
     });
   };
 }
+
+export const compareNodes
