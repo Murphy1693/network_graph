@@ -15,7 +15,7 @@ class Graph {
       .on("mousemove", this.handleMouseMove)
       .on("mouseup", this.handleMouseUp)
       .on("contextmenu", this.handleRightClick);
-    console.log(this.props.nodes)
+    console.log(this.props.nodes);
   }
 
   handleMouseDown = (e) => {
@@ -97,6 +97,11 @@ class Graph {
     this.context.restore();
     this.context.save();
     this.props.nodes.forEach((node) => {
+      if ((this.props.fontEnabled = true)) {
+        this.context.fillStyle = "black";
+        this.context.font = "8px Arial";
+        this.context.fillText(node.id, node.x, node.y + 15);
+      }
       this.context.beginPath();
       this.drawNode(node);
       this.context.fillStyle =
@@ -181,6 +186,7 @@ class Graph {
         }
       })
       .strength(0.05);
+
     const forceY = d3.forceY(this.props.height / 2).strength(0.05);
     const forceCollide = d3.forceCollide((this.props.collideForce = 15));
 
