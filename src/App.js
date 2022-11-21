@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Graph from "./GraphSim.js";
-import GraphData, {compareNodes} from "../graphData.js";
+import GraphData, { compareNodes } from "../graphData.js";
 import * as d3 from "d3";
 
 let vis;
@@ -88,7 +88,7 @@ const App = () => {
   };
 
   useEffect(() => {
-    console.log(compareNodes(null, selectedNodes, graphData))
+    console.log(compareNodes(active, selectedNodes, graphData));
     initVis();
   }, [width, nodes, active, selectedNodes]);
 
