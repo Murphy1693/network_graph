@@ -1,15 +1,16 @@
-import React, {useState} from "react";
-import Row from "./Row.js"
+import React, { useState } from "react";
+import Row from "./Row.js";
 
 const NodeBody = (props) => {
-    const [page, setPage] = useState(0);
-    return <div>
-        <div className="rows-container">
-            {props.genotype[page].map((alleleRow) => {
-                return <Row row={alleleRow}></Row>
-            })}
-        </div>
+  return (
+    <div>
+      <div className="rows-container">
+        {props.genotype[props.page].map((alleleRow) => {
+          return <Row color={props.color} row={alleleRow}></Row>;
+        })}
+      </div>
     </div>
-}
+  );
+};
 
 export default NodeBody;

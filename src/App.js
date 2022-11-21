@@ -106,9 +106,12 @@ const App = () => {
         </div>
       </div>
       <div className="canvas-container">
-      <canvas ref={canvasRef} height="600" width={width}></canvas>
-      <Panel nodes={compareNodes(active, selectedNodes, graphData)}></Panel>
-    </div>
+        <canvas ref={canvasRef} height="600" width={width}></canvas>
+        <Panel
+          colors={colors}
+          nodes={compareNodes(active, selectedNodes, graphData)}
+        ></Panel>
+      </div>
       <div style={{ position: "fixed", bottom: 0 }}>
         {JSON.stringify(selectedNodes)}
       </div>

@@ -65,7 +65,7 @@ export const compareNodes = (activeIndex, selectedNodes = [], graphData) => {
     primaryNode.display_observed_genotype = paginateArray(
       primaryNode.display_observed_genotype
     );
-    return { primary: primaryNode, secondary: null };
+    return { primary: primaryNode, secondaries: null };
   } else if (!activeIndex && selectedNodes.length) {
     let secondaries = selectedNodes.map((id) => {
       let node = { ...graphData._nodes[id] };
@@ -89,7 +89,7 @@ export const compareNodes = (activeIndex, selectedNodes = [], graphData) => {
       );
       return node;
     });
-    return { primary: null, secondary: secondaries };
+    return { primary: null, secondaries: secondaries };
   } else if (activeIndex && selectedNodes.length) {
     primaryNode.display_observed_genotype = [];
     primaryNode.latent_display_genotype = [];
@@ -139,13 +139,17 @@ export const compareNodes = (activeIndex, selectedNodes = [], graphData) => {
         }
       );
       node.latent_display_genotype = paginateArray(
-        node.latent_display_genotype
+        node.latent_display_genotype.flatMap((alleles) => {
+          return alleles;
+        })
       );
-      primaryNode.flat_latent_genotype.forEach((alleleObject) => {
-        primaryNode.latent_display_genotype.push(alleleObject.genotype);
-      });
+      // primaryNode.flat_latent_genotype.forEach((alleleObject) => {
+      //   primaryNode.latent_display_genotype.push(alleleObject.genotype);
+      // });
       primaryNode.latent_display_genotype = paginateArray(
-        primaryNode.latent_display_genotype
+        primaryNode.flat_latent_genotype.flatMap((alleleObject) => {
+          return alleleObject.genotype;
+        })
       );
       primaryNode.latent_shared_alleles.push(node.latent_alleles_count);
       zip(
@@ -189,15 +193,17 @@ export const compareNodes = (activeIndex, selectedNodes = [], graphData) => {
       node.display_observed_genotype = paginateArray(
         node.display_observed_genotype
       );
-      primaryNode.observed_genotype.forEach((alleleObject) => {
-        primaryNode.display_observed_genotype.push(alleleObject.genotype);
-      });
+      // primaryNode.observed_genotype.forEach((alleleObject) => {
+      //   primaryNode.display_observed_genotype.push(alleleObject.genotype);
+      // });
       primaryNode.display_observed_genotype = paginateArray(
-        primaryNode.display_observed_genotype
+        primaryNode.observed_genotype.flatMap((alleleObject) => {
+          return alleleObject.genotype;
+        })
       );
       primaryNode.shared_alleles.push(node.shared_alleles);
       return node;
     });
-    return { primary: primaryNode, secondary: secondaries };
+    return { primary: primaryNode, secondaries: secondaries };
   }
 };

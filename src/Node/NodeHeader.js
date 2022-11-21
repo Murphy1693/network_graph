@@ -1,7 +1,7 @@
 import React from "react";
 
 const NodeHeader = (props) => {
-    return <div>{props.id}</div>
-}
+  return <div className="node-header">{props.id}</div>;
+};
 
-export default NodeHeader
+export default NodeHeader;

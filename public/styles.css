@@ -36,6 +36,7 @@ canvas {
   margin: 0;
   box-shadow: 8px 10px 5px -2px #888;
   box-shadow: inset 0 0 10px black;
+  max-height: 600px;
 }
 .canvas-container {
   display: flex;
@@ -44,8 +45,15 @@ canvas {
   padding-left: 30px;
 }
 
-.node {
+/* .node {
+  box-shadow: rgb(38 57 77) 10px 10px 15px -10px;
   display: flex;
-  border: 1px solid black;
+  flex-direction: column;
+  width: fit-content;
   padding: 10px;
+} */
+
+.node-header {
+  text-align: center;
+  font-size: 10px
 }

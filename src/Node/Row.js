@@ -1,7 +1,7 @@
 import React from "react";
 import AlleleBox from "./AlleleBox.js";
 
-const Row = ({ row, color='black' }) => {
+const Row = ({ row, color = "black" }) => {
   let style = {
     margin: "2px",
     display: "flex",
@@ -11,8 +11,8 @@ const Row = ({ row, color='black' }) => {
   return (
     <div style={style}>
       {row?.split("").map((value, i) => {
-        return <div></div>
-        // return <AlleleBox color={'red'} key={i} value={value}></AlleleBox>;
+        // return <div></div>
+        return <AlleleBox color={color} key={i} value={value}></AlleleBox>;
       })}
     </div>
   );
