@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Graph from "./GraphSim.js";
 import GraphData, { compareNodes } from "../graphData.js";
 import * as d3 from "d3";
+import Panel from "./Panel.js";
 
 let vis;
 let graphData = new GraphData();
@@ -104,7 +105,10 @@ const App = () => {
           </div>
         </div>
       </div>
+      <div className="canvas-container">
       <canvas ref={canvasRef} height="600" width={width}></canvas>
+      <Panel nodes={compareNodes(active, selectedNodes, graphData)}></Panel>
+    </div>
       <div style={{ position: "fixed", bottom: 0 }}>
         {JSON.stringify(selectedNodes)}
       </div>
