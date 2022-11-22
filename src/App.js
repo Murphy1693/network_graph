@@ -43,6 +43,16 @@ const App = () => {
     }
   };
 
+  const removeNode = (id) => {
+    if (id === active) {
+      setActive(null);
+    } else if (selectedNodes.includes(id)) {
+      let copySelectedNodes = selectedNodes.slice();
+      copySelectedNodes.splice(copySelectedNodes.indexOf(id), 1);
+      setSelectedNodes(copySelectedNodes);
+    }
+  };
+
   const handleActive = (id) => {
     if (active === id) {
       setActive(null);
@@ -108,6 +118,7 @@ const App = () => {
       <div className="canvas-container">
         <canvas ref={canvasRef} height="600" width={width}></canvas>
         <Panel
+          removeNode={removeNode}
           colors={colors}
           nodes={compareNodes(active, selectedNodes, graphData)}
         ></Panel>

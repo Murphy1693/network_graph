@@ -93,7 +93,7 @@ export const compareNodes = (activeIndex, selectedNodes = [], graphData) => {
   } else if (activeIndex && selectedNodes.length) {
     primaryNode.display_observed_genotype = [];
     primaryNode.latent_display_genotype = [];
-    primaryNode.shared_alleles = [];
+    primaryNode.shared_alleles_arr = [];
     primaryNode.latent_alleles_count = 0;
     primaryNode.latent_shared_alleles = [];
     let secondaries = selectedNodes.map((id) => {
@@ -201,7 +201,7 @@ export const compareNodes = (activeIndex, selectedNodes = [], graphData) => {
           return alleleObject.genotype;
         })
       );
-      primaryNode.shared_alleles.push(node.shared_alleles);
+      primaryNode.shared_alleles_arr.push(node.shared_alleles);
       return node;
     });
     return { primary: primaryNode, secondaries: secondaries };

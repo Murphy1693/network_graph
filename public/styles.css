@@ -1,7 +1,7 @@
 html, body {
   margin: 0;
   margin-left: 10px;
-
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .app-container {
@@ -16,6 +16,7 @@ html, body {
 .app-title {
   margin-right: auto;
   font-size: 24px;
+  font-family: none;
 }
 
 .app-nav-bar {
@@ -54,6 +55,66 @@ canvas {
 } */
 
 .node-header {
+  position: relative;
   text-align: center;
-  font-size: 10px
+  font-size: 10px;
+  padding-bottom: 4px;
 }
+
+.panel-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.node-body-container {
+  display: flex;
+}
+
+.node-info-container {
+  display: flex;
+  flex-direction: column;
+  padding-left: 1rem;
+}
+
+.close {
+  position: absolute;
+  margin-left: auto;
+  opacity: 0.3;
+  right: 20px;
+  top: 0;
+}
+
+.close:hover {
+  opacity: 1;
+}
+
+.close:before, .close:after {
+  margin-left: auto;
+  position: absolute;
+  left: 15px;
+  content: ' ';
+  height: 12px;
+  width: 2px;
+  background-color: #333;
+}
+.close:before {
+  transform: rotate(45deg);
+}
+.close:after {
+  transform: rotate(-45deg);
+}
+
+.node-info {
+  margin-top: 1rem;
+  padding-left: 1rem;
+}
+.node-info-item {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-size: 10px;
+  padding-bottom: 5px;
+}
+

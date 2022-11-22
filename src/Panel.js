@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import Node from "./Node/Node.js";
+import PanelInfo from "./PanelInfo.js";
 
 const Panel = (props) => {
   const [page, setPage] = useState(0);
   const [latent, setLatent] = useState(false);
   return (
     <div className="app-panel">
-      <div
+      <PanelInfo latent={latent} page={page}></PanelInfo>
+      {/* <div
         onClick={() => {
           if (page !== 4) {
             setPage(page + 1);
@@ -21,10 +23,11 @@ const Panel = (props) => {
         }}
       >
         {latent ? "latent genotype" : "observed genotype"}
-      </div>
+      </div> */}
       <div>
         {props.nodes?.primary ? (
           <Node
+            removeNode={props.removeNode}
             latent={latent}
             page={page}
             color={"red"}
@@ -37,6 +40,7 @@ const Panel = (props) => {
           ? props.nodes.secondaries.map((node, i) => {
               return (
                 <Node
+                  removeNode={props.removeNode}
                   latent={latent}
                   page={page}
                   color={props.colors[i]}
