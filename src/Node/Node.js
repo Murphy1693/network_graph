@@ -52,7 +52,7 @@ const Node = (props) => {
         {props.node.shared_alleles ? (
           <div className="node-info-item">
             <label>Shared</label>
-            <span style={{ marginLeft: "10px", color: props.color }}>
+            <span style={{ marginLeft: "10px", color: "red" }}>
               {props.node.shared_alleles}
             </span>
           </div>

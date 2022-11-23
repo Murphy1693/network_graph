@@ -1,6 +1,6 @@
 import React from "react";
 
-const AlleleBox = ({ boxSize = "5", borderColor = "black", color, value }) => {
+const AlleleBox = ({ boxSize = "6", borderColor = "black", color, value }) => {
   let style = {
     boxSizing: "border-box",
     width: `${boxSize}px`,

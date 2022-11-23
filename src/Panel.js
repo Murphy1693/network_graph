@@ -7,7 +7,7 @@ const Panel = (props) => {
   const [latent, setLatent] = useState(false);
   return (
     <div className="app-panel">
-      <PanelInfo latent={latent} page={page}></PanelInfo>
+      <PanelInfo setPage={setPage} latent={latent} page={page}></PanelInfo>
       {/* <div
         onClick={() => {
           if (page !== 4) {
@@ -35,7 +35,14 @@ const Panel = (props) => {
           ></Node>
         ) : null}
       </div>
-      <div style={{ paddingTop: "2rem", display: "flex", gap: "1rem" }}>
+      <div
+        style={{
+          paddingTop: "2rem",
+          display: "flex",
+          gap: "1rem",
+          flexWrap: "wrap",
+        }}
+      >
         {props.nodes?.secondaries
           ? props.nodes.secondaries.map((node, i) => {
               return (

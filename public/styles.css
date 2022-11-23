@@ -43,6 +43,7 @@ canvas {
   display: flex;
 }
 .app-panel {
+  width: 100%;
   padding-left: 30px;
 }
 
@@ -62,8 +63,10 @@ canvas {
 }
 
 .panel-info {
+  font-size: 14px;
   display: flex;
   flex-direction: column;
+  /* justify-content: space-between; */
 }
 
 .node-body-container {
@@ -116,5 +119,94 @@ canvas {
 label {
   font-size: 10px;
   padding-bottom: 5px;
+  font-weight: bold;
 }
 
+button:active {
+  scale: 0.9;
+  transition-duration: 50ms;
+}
+
+
+.plus-button {
+	border: 2px solid lightgrey;
+	background-color: #fff;
+	font-size: 16px;
+	height: 2.5em;
+	width: 2.5em;
+	border-radius: 999px;
+	position: relative;
+}
+
+.plus-button::after,
+.plus-button::before {
+		content: "";
+		display: block;
+		background-color: grey;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+
+	}
+
+.plus-button::before {
+  height: 1em;
+  width: 0.2em;
+}
+
+.plus-button::after {
+  height: 0.2em;
+  width: 1em;
+}
+
+.plus-button--small {
+	font-size: 6px;
+}
+
+.plus-button--large {
+	font-size: 22px;
+}
+
+.minus-button {
+	border: 2px solid lightgrey;
+	background-color: #fff;
+	font-size: 16px;
+	height: 2.5em;
+	width: 2.5em;
+	border-radius: 999px;
+	position: relative;
+}
+
+.minus-button::after,
+.minus-button::before {
+		content: "";
+		display: block;
+		background-color: grey;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
+
+/* .minus-button::before {
+  height: 1em;
+  width: 0.2em;
+} */
+
+.minus-button::after {
+  height: 0.2em;
+  width: 1em;
+}
+
+.minus-button--small {
+	font-size: 6px;
+}
+
+.minus-button--large {
+	font-size: 22px;
+}
+
+.panel-page-info {
+  padding: 1rem 0 1rem 0;
+}
