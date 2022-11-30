@@ -3,8 +3,10 @@ import React from "react";
 const PanelInfo = (props) => {
   return (
     <div className="panel-info">
-      <div className="genotype-display">
-        {props.display ? "Latent" : "Observed"}
+      <div style={{cursor: "pointer", userSelect: "none"}} onClick={() => {
+        props.setLatent(!props.latent)
+      }} className="genotype-display">
+        {props.latent ? "Latent" : "Observed"}
       </div>
       <div className="panel-page-info">
         <div>Page: {props.page}</div>

@@ -9,7 +9,7 @@ const AlleleBox = ({ boxSize = "6", borderColor = "black", color, value }) => {
       value === "1"
         ? "red"
         : value === "2"
-        ? color
+        ? color 
         : value === "3"
         ? "red"
         : "black"
@@ -21,6 +21,8 @@ const AlleleBox = ({ boxSize = "6", borderColor = "black", color, value }) => {
         ? "red"
         : value === "2"
         ? color
+        // : value === "3"
+        // ? "black"
         : "white",
     marginLeft: "2px",
   };

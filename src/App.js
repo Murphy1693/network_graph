@@ -6,7 +6,7 @@ import Panel from "./Panel.js";
 
 let vis;
 let graphData = new GraphData();
-const colors = ["blue", "green", "purple", "orange"];
+const colors = ["blue", "green", "purple", "aquamarine", "orange"];
 
 const App = () => {
   const container = useRef(null);

@@ -7,7 +7,7 @@ const Panel = (props) => {
   const [latent, setLatent] = useState(false);
   return (
     <div className="app-panel">
-      <PanelInfo setPage={setPage} latent={latent} page={page}></PanelInfo>
+      <PanelInfo setLatent={setLatent} setPage={setPage} latent={latent} page={page}></PanelInfo>
       {/* <div
         onClick={() => {
           if (page !== 4) {
@@ -27,6 +27,8 @@ const Panel = (props) => {
       <div>
         {props.nodes?.primary ? (
           <Node
+            shared={latent ? props.nodes.primary.latent_shared_alleles : props.nodes.primary.shared_alleles}
+            total={latent ? props.nodes.primary.latent_alleles_count : props.nodes.primary.alleles_count}
             removeNode={props.removeNode}
             latent={latent}
             page={page}
@@ -37,9 +39,8 @@ const Panel = (props) => {
       </div>
       <div
         style={{
-          paddingTop: "2rem",
+        //   paddingTop: "2rem",
           display: "flex",
-          gap: "1rem",
           flexWrap: "wrap",
         }}
       >
@@ -47,6 +48,9 @@ const Panel = (props) => {
           ? props.nodes.secondaries.map((node, i) => {
               return (
                 <Node
+                  key={node.id}
+                  shared={latent ? node.latent_shared_alleles : node.shared_alleles}
+                  total={latent ? node.latent_alleles_count : node.alleles_count}
                   removeNode={props.removeNode}
                   latent={latent}
                   page={page}

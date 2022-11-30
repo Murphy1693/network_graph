@@ -119,7 +119,7 @@ class Graph {
 
   drawNode = (d) => {
     this.context.moveTo(d.x, d.y);
-    this.context.arc(d.x, d.y, (this.props.nodeSize = 4), 0, 2 * Math.PI);
+    this.context.arc(d.x, d.y, (this.props.nodeSize = 5), 0, 2 * Math.PI);
   };
 
   drawArrow = (link) => {

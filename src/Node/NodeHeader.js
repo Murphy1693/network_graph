@@ -3,7 +3,7 @@ import React from "react";
 const NodeHeader = (props) => {
   return (
     <div className="node-header">
-      {props.id}
+      <span style={{color: props.color, fontWeight: "bold"}}>{props.id}</span>
       <div
         className="close"
         onClick={() => {

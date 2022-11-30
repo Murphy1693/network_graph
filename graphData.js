@@ -53,7 +53,9 @@ export const compareNodes = (activeIndex, selectedNodes = [], graphData) => {
   let primaryNode = { ...graphData._nodes[activeIndex] };
   if (activeIndex && !selectedNodes.length) {
     primaryNode.display_observed_genotype = [];
+    primaryNode.latent_display_genotype = [];
     primaryNode.alleles_count = 0;
+    primaryNode.latent_alleles_count = 0;
     primaryNode.observed_genotype.forEach((alleleObject) => {
       alleleObject.genotype.split("").forEach((allele) => {
         if (allele === "1") {
@@ -62,9 +64,20 @@ export const compareNodes = (activeIndex, selectedNodes = [], graphData) => {
       });
       primaryNode.display_observed_genotype.push(alleleObject.genotype);
     });
+    primaryNode.flat_latent_genotype.forEach((alleleObject) => {
+      alleleObject.genotype.split("").forEach((allele) => {
+        if (allele === "1") {
+          primaryNode.latent_alleles_count++;
+        }
+      });
+      primaryNode.latent_display_genotype.push(alleleObject.genotype);
+    });
     primaryNode.display_observed_genotype = paginateArray(
       primaryNode.display_observed_genotype
     );
+    primaryNode.latent_display_genotype = paginateArray(
+      primaryNode.latent_display_genotype
+    )
     return { primary: primaryNode, secondaries: null };
   } else if (!activeIndex && selectedNodes.length) {
     let secondaries = selectedNodes.map((id) => {
@@ -83,10 +96,28 @@ export const compareNodes = (activeIndex, selectedNodes = [], graphData) => {
         });
         node.display_observed_genotype.push(newAlleles);
       });
+      let latent_count = 0;
+      node.latent_display_genotype = [];
+      node.flat_latent_genotype.forEach((alleleObject) => {
+        let newAlleles = "";
+        alleleObject.genotype.split("").forEach((allele) => {
+          if (allele === "1") {
+            latent_count++;
+            newAlleles += "2";
+          } else {
+            newAlleles += "0";
+          }
+        });
+        node.latent_display_genotype.push(newAlleles);
+      });
       node.alleles_count = count;
       node.display_observed_genotype = paginateArray(
         node.display_observed_genotype
       );
+      node.latent_alleles_count = latent_count;
+      node.latent_display_genotype = paginateArray(
+        node.latent_display_genotype
+      )
       return node;
     });
     return { primary: null, secondaries: secondaries };

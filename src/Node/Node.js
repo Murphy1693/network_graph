@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import NodeHeader from "./NodeHeader.js";
 import NodeBody from "./NodeBody.js";
 
@@ -17,21 +17,41 @@ const makeRGBA = function (color, opacity = 0.2) {
 };
 
 const Node = (props) => {
+  const [dbl, setDbl] = useState(false);
   let nodeStyle = {
     // border: `1px solid ${props.color}`,
-    boxShadow: "rgb(38 57 77) 10px 10px 15px -10px",
+    // boxShadow: "rgb(38 57 77) 10px 10px 15px -10px",
+    boxShadow: "inset 0 0 5px black",
     display: "flex",
     flexDirection: "column",
     width: "fit-content",
     padding: "5px 10px 10px 10px",
+    transition: "transform 0.6s",
     backgroundColor: makeRGBA(props.color, 0.15),
+    // backgroundColor: "rgb(240, 240, 240)",
+    // border: `2px solid ${props.color}`
   };
 
+  let dblStyle = {
+    ...nodeStyle,
+    transition: "transform 0.6s",
+    transform: "scale(1.3)"
+}
+
+
+
   return (
-    <div style={{ display: "flex" }}>
-      <div style={nodeStyle} className="node">
+    <div style={{padding: "0rem 1rem 2rem 0rem", display: "flex"}}>
+        <div style={{backgroundColor: "white", display: "flex"}}>
+      <div 
+      onDoubleClick={(e) => {
+        console.log('double')
+        setDbl(!dbl);
+      }}
+      style={ nodeStyle} className="node">
         {/* <div style={{backgroundColor: makeRGBA(props.color, 0.15)}}> */}
         <NodeHeader
+          color={props.color}
           page={props.page}
           id={props.node.id}
           removeNode={props.removeNode}
@@ -48,19 +68,21 @@ const Node = (props) => {
         ></NodeBody>
         {/* </div> */}
       </div>
+      </div>
+
       <div className="node-info">
         {props.node.shared_alleles ? (
           <div className="node-info-item">
             <label>Shared</label>
             <span style={{ marginLeft: "10px", color: "red" }}>
-              {props.node.shared_alleles}
+              {props.shared}
             </span>
           </div>
         ) : null}
         <div className="node-info-item">
           <label>Total</label>
           <span style={{ marginLeft: "10px", color: props.color }}>
-            {props.node.alleles_count}
+            {props.total}
           </span>
         </div>
       </div>

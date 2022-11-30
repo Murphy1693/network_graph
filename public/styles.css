@@ -2,6 +2,8 @@ html, body {
   margin: 0;
   margin-left: 10px;
   font-family: Arial, Helvetica, sans-serif;
+  background-color: rgb(48, 48, 48);
+  color: white;
 }
 
 .app-container {
@@ -32,7 +34,8 @@ html, body {
 }
 
 canvas {
-  background-color: rgb(240, 240, 240);
+  /* background-color: rgb(240, 240, 240); */
+  background-color: rgb(200, 200, 200);
   left: 100;
   margin: 0;
   box-shadow: 8px 10px 5px -2px #888;
@@ -46,14 +49,6 @@ canvas {
   width: 100%;
   padding-left: 30px;
 }
-
-/* .node {
-  box-shadow: rgb(38 57 77) 10px 10px 15px -10px;
-  display: flex;
-  flex-direction: column;
-  width: fit-content;
-  padding: 10px;
-} */
 
 .node-header {
   position: relative;
@@ -76,7 +71,7 @@ canvas {
 .node-info-container {
   display: flex;
   flex-direction: column;
-  padding-left: 1rem;
+  padding-left: .5rem;
 }
 
 .close {
@@ -109,7 +104,7 @@ canvas {
 
 .node-info {
   margin-top: 1rem;
-  padding-left: 1rem;
+  padding-left: .5rem;
 }
 .node-info-item {
   display: flex;
